@@ -1,0 +1,98 @@
+@import "~common/stylus/var.styl";
+@import "~common/stylus/mixin.styl";
+.monitoring-wrapper
+  position relative
+  width 100%
+  height 100%
+  padding 60px
+  box-sizing: border-box;
+  boxshadow(12px)
+  backgroundcolor()
+  .hd-video-wrap
+    height 100%
+    text-align center
+    box-sizing border-box
+    .title
+      margin-top 15px
+      font-size 48px
+      text-align left
+      color #c4e5f0
+  .videoList
+    padding-top 30px
+    font-size 0
+    .item
+      display inline-block
+      float left
+      width 400px
+      margin-bottom 30px
+      text-align left
+      margin-left 59px
+      &:nth-child(4n+1)
+        margin-left 0
+      .video
+        position relative
+        .layer
+          position absolute
+          top 0
+          left 0
+          width 100%
+          height 100%
+          cursor pointer
+      .title
+        height 86px
+        overflow hidden
+        margin 10px auto 0
+        text-align left
+        font-size 36px
+        line-height 1.2
+        color #c4e5f0
+        cursor pointer
+  .no-video
+    font-size 72px
+    text-align center
+    padding-top 50px
+    color color
+  .pager
+    text-align center
+    .number
+      height 64px;
+      font-size 48px
+      line-height 64px
+      color #c4e5f0
+      background transparent
+    .btn-quicknext,.btn-quickprev
+      font-size 48px
+      line-height 64px
+      color #c4e5f0
+      background transparent
+    .btn-next,.btn-prev,.el-pagination__total,.el-pagination__jump
+      font-size 48px
+      color #c4e5f0
+      line-height 64px
+      background transparent
+      .el-icon
+        height 64px
+        font-size 48px
+        line-height 64px
+    .el-pagination__jump
+      .el-pagination__editor
+        &.el-input
+          width 100px
+        .el-input__inner
+          height 56px
+          font-size 48px
+          line-height 56px
+  .loading
+    position absolute
+    left 0
+    top 0
+    width 100%
+    height 100%
+    background-color rgba(0, 0, 0, 0.3)
+    .el-icon-loading
+      font-size 80px
+      color #fff
+      position absolute
+      top 50%
+      left 50%
+      transform translate(-50%, -50%)

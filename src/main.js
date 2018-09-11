@@ -5,6 +5,7 @@ import ElementUI from 'element-ui';
 import store from './store';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'common/stylus/index.styl';
+// import './renderBefore';
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false;

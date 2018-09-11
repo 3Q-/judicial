@@ -15,15 +15,17 @@
             <i class="el-icon-close" @click="show = !show"></i>
           </el-header>
           <el-main>
-            <el-tree
-              class="filter-tree"
-              :data="list"
-              :props="defaultProps"
+            <el-tree class="filter-tree"
+              show-checkbox
               accordion
               default-expand-all
+              node-key="id"
+              ref="examNodeTree"
+              :data="list"
+              :props="defaultProps"
               :filter-node-method="filterNode"
               @node-click="selectNode"
-              ref="examNodeTree">
+              @check-change="checkChange">
             </el-tree>
           </el-main>
         </div>
@@ -49,6 +51,9 @@ export default {
   computed: {
     ...mapGetters([
     ]),
+    tree(){
+      return this.$refs.examNodeTree;
+    },
     list(){
       const me = this;
       let areas = [];
@@ -96,11 +101,14 @@ export default {
       setExamNodeId: 'SET_EXAM_NODE_ID',
       setExamAdministrativeId: 'SET_EXAM_ADMINISTRATIVE_ID'
     }),
-    selectNode(item){
-      console.log(item);
+    checkChange(item, state, child){
+      const keys = this.tree.getCheckedKeys();
+      this.setExamNodeId(keys.join(','));
+    },
+    selectNode(item, node, tree){
       if (item.pid){
-        this.setExamNodeId(item.id);
-        this.setExamAdministrativeId(item.pid);
+        // this.setExamNodeId(item.id);
+        // this.setExamAdministrativeId(item.pid);
       }
     },
     filterNode(value, data){

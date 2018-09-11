@@ -1,5 +1,5 @@
 {
-  "name": "guangxi",
+  "name": "judicial",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "3Q <yongjy@126.com>",
@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "element-ui": "^2.0.11",
+    "js-cookie": "^2.2.0",
     "video.js": "^7.1.0",
     "videojs-contrib-hls": "^5.14.1",
     "vue": "^2.5.2",

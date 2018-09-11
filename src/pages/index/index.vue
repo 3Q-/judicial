@@ -12,7 +12,7 @@
         <div class="title" :title="item">{{item.channelName}}</div>
       </div>
     </div>
-    <div class="page">
+    <div class="page" v-if="list.length">
       <el-pagination
         background
         @current-change="handleCurrentChange"
@@ -37,16 +37,7 @@ import 'video.js/dist/video-js.css';
 import 'vue-video-player/src/custom-theme.css';
 Vue.use(VideoPlayer);
 const playerOptions = {
-  // videojs and plugin options
   autoplay: true,
-  // loop: true,
-  // sources: [{
-  //   withCredentials: false,
-  //   type: 'application/x-mpegURL',
-  //   src: 'http://hls.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b.m3u8'
-  //   // type: 'video/mp4',
-  //   // src: 'http://127.0.0.1/example/video/test.mp4'
-  // }],
   controlBar: {
     timeDivider: false,
     durationDisplay: false
@@ -138,6 +129,7 @@ export default {
       this.getLiveVideoList();
     },
     playerReadied(player){
+      player.play();
       // console.log(player);
       // var hls = player.tech({ IWillNotUseThisInPlugins: true }).hls;
       // console.log(hls);
@@ -148,7 +140,7 @@ export default {
     }
   },
   watch: {
-    area(){
+    nodeId(){
       this.getLiveVideoList();
     }
   }

@@ -32,7 +32,7 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   externals: {
-    'videojs': 'videojs'
+    'EZUIPlayer': 'EZUIPlayer'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],

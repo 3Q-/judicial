@@ -1,6 +1,6 @@
 import router from './router';
-import {Message} from 'element-ui';
-import store from './store';
+// import {Message} from 'element-ui';
+// import store from './store';
 import Cookies from 'js-cookie';
 
 const whiteList = ['/login'];

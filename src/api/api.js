@@ -10,3 +10,8 @@ export const getExamNodes = (data) => {
   let url = context + 'examNode/getExamNodes.jspx';
   return axios.get(url);
 };
+
+export const validate = (data) => {
+  let url = '/uc/frame/login/validate.jspx';
+  return axios.post(url, data);
+};

@@ -1,13 +1,16 @@
 <template>
   <div class="login-wrap">
-    <div class="ms-title">西北政法大学创新创业学分管理系统</div>
     <div class="ms-login">
+      <div class="ms-title">
+         <div><img src="./yun.png" alt=""></div>
+        <h2> 国家统一法律职业资格考试<br>考务安全云平台 </h2>
+      </div>
       <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-width="0px">
         <el-form-item prop="username">
-          <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="用户名" />
+          <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="用户名" prefix-icon="el-icon-phone" />
         </el-form-item>
         <el-form-item prop="password">
-          <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="密码" />
+          <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"  placeholder="密码"  prefix-icon="el-icon-goods"/>
         </el-form-item>
         <div class="login-btn">
            <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
@@ -15,13 +18,13 @@
         </div>
       </el-form>
     </div>
+    <div class="face"><img src="./center1.png" width="100%"></div>
   </div>
 </template>
-
 <script>
-
 import { isvalidUsername } from 'common/js/validate';
-// import store from 'store/index';
+import base64 from 'common/js/base64';
+import {validate} from 'api/api';
 export default {
   components: { },
   name: 'login',
@@ -60,6 +63,15 @@ export default {
       me.$refs.loginForm.validate(valid => {
         if (valid){
           me.loading = true;
+          const data = {};
+          data.loginId = base64.encoder(me.loginForm.username);
+          data.passwd = base64.encoder(me.loginForm.password);
+          validate(data).then((res) => {
+            console.log(res);
+            me.loading = false;
+          }).catch(() => {
+            me.loading = false;
+          });
           // store.dispatch('user.loginByUsername', me.loginForm).then(() => {
           //   me.loading = false;
           //   me.$router.push({ path: '/info' });
@@ -73,22 +85,6 @@ export default {
       });
     },
     afterQRScan(){
-      // const hash = window.location.hash.slice(1)
-      // const hashObj = getQueryObject(hash)
-      // const originUrl = window.location.origin
-      // history.replaceState({}, '', originUrl)
-      // const codeMap = {
-      //   wechat: 'code',
-      //   tencent: 'code'
-      // }
-      // const codeName = hashObj[codeMap[this.auth_type]]
-      // if (!codeName) {
-      //   alert('第三方登录失败')
-      // } else {
-      //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-      //     this.$router.push({ path: '/' })
-      //   })
-      // }
     }
   },
   created(){
@@ -99,32 +95,28 @@ export default {
   }
 };
 </script>
-
 <style scoped lang="stylus">
 .login-wrap{
   position: relative;
   width:100%;
   height:100%;
-  background: #324157;
+  background: url(./bg.png) no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
   .ms-title{
-    position: absolute;
-    top:50%;
-    width:100%;
-    margin-top: -230px;
+    margin-bottom: 30px;
     text-align: center;
     font-size:30px;
     color: #fff;
+    line-height: 1.2;
   }
   .ms-login{
     position: absolute;
     left:50%;
     top:50%;
-    width:300px;
-    height:160px;
-    margin:-150px 0 0 -190px;
-    padding:40px;
-    border-radius: 5px;
-    background: #fff;
+    width:450px;
+    margin-top: -195px;
+    margin-left: 60px;
     .login-btn{
       text-align: center;
     }
@@ -132,6 +124,15 @@ export default {
       width:100%;
       height:36px;
     }
+  }
+  .face{
+    position: absolute;
+    top:50%;
+    right: 50%;
+    height: 450px;
+    width:450px;
+    margin-right: 60px;
+    margin-top: -195px;
   }
 }
 </style>

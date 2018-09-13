@@ -1,17 +1,20 @@
 <template>
   <div class="container clearfix">
-    <h1><div class="time"><el-button disabled icon="el-icon-date">{{time|formatDate}}</el-button></div>国家统一法律职业资格考试监控视频</h1>
+  <!-- <city-picker field="city" placeholder="选择城市" :city-list="cityList" :no-hot="false" :value="cityId"
+    @on-city-change="onCityChange"></city-picker> -->
+    <h1><div class="time"><el-button disabled icon="el-icon-date" @click="selectCity">{{time|formatDate}}</el-button></div>国家统一法律职业资格考试监控视频</h1>
     <div class="wrap" v-if="list.length">
       <div class="item" v-for="(item,index) in list" :key="index">
         <div class="player" >
-          <video-player class="vjs-custom-skin"
-            :options="item.playerOptions"
-            @ready="playerReadied">
-          </video-player>
+          <video :id="'myPlayer'+index" poster="./video.png" controls playsInline webkit-playsinline autoplay :width="videoW" :height="videoH" >
+            <source :src="item.rtmp" />
+            <source :src="item.liveAddress" type="application/x-mpegURL" />
+          </video>
         </div>
         <div class="title" :title="item">{{item.channelName}}</div>
       </div>
     </div>
+    <div v-else class="no-video">暂无监控视屏</div>
     <div class="page" v-if="list.length">
       <el-pagination
         background
@@ -27,29 +30,19 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import {mapGetters} from 'vuex';
 import TreeExamnode from 'base/tree-examnode/tree-examnode';
+import cityPicker from 'base/city-picker/city-picker';
+import cityList from 'common/data/china-city-data';
 import {formatDate} from 'common/js/date';
-import VideoPlayer from 'vue-video-player';
 import {getLiveVideoList} from 'api/api';
-import 'video.js/dist/video-js.css';
-import 'vue-video-player/src/custom-theme.css';
-Vue.use(VideoPlayer);
-const playerOptions = {
-  autoplay: true,
-  controlBar: {
-    timeDivider: false,
-    durationDisplay: false
-  },
-  flash: {hls: { withCredentials: false }},
-  html5: {hls: { withCredentials: false }},
-  poster: './static/images/video.png'
-};
+import EZUIPlayer from 'EZUIPlayer';
 export default {
-  components: {TreeExamnode},
+  components: {TreeExamnode, cityPicker},
   data(){
     return {
+      cityList,
+      cityId: '410100',
       time: new Date(),
       screenWidth: document.body.clientWidth,
       videoList: [],
@@ -74,18 +67,6 @@ export default {
     },
     list(){
       const me = this;
-      me.videoList.forEach(item => {
-        let obj = Object.assign({
-          width: me.videoW,
-          height: me.videoH,
-          sources: [{
-            withCredentials: false,
-            type: 'application/x-mpegURL',
-            src: item.liveAddress
-          }]
-        }, playerOptions);
-        item.playerOptions = obj;
-      });
       return me.videoList;
     }
   },
@@ -111,6 +92,23 @@ export default {
     }
   },
   methods: {
+    initMedia(id){
+      let player = new EZUIPlayer(id);
+      player.on('error', function(){
+        console.log('error');
+      });
+      player.on('play', function(){
+        console.log('play');
+      });
+      player.on('pause', function(){
+        console.log('pause');
+      });
+      // player.play();
+    },
+    onCityChange(cityId){
+      this.cityId = cityId;
+    },
+    selectCity(){},
     getLiveVideoList(){
       const me = this;
       const data = {};
@@ -120,23 +118,24 @@ export default {
       data.pageSize = me.pagination.size;
       getLiveVideoList(data).then(res => {
         me.pagination.total = res.page.total;
-        me.videoList = res.page.rows;
+        const videoList = res.page.rows;
+
+        me.videoList = [];
+        me.$nextTick(() => {
+          me.videoList = videoList;
+          me.$nextTick(() => {
+            me.videoList.forEach((item, i) => {
+              var videoId = `myPlayer${i}`;
+              me.initMedia(videoId);
+            });
+          });
+        });
       });
     },
 
     handleCurrentChange(val){
       this.pagination.current = val;
       this.getLiveVideoList();
-    },
-    playerReadied(player){
-      player.play();
-      // console.log(player);
-      // var hls = player.tech({ IWillNotUseThisInPlugins: true }).hls;
-      // console.log(hls);
-      // player.tech_.hls.xhr.beforeRequest = function(options){
-      //   // console.log(options);
-      //   return options;
-      // };
     }
   },
   watch: {
@@ -154,6 +153,8 @@ export default {
   margin: 0 auto;
   padding: 20px 0;
   background: #c7e1f7;
+  min-height: 100%;
+  box-sizing: border-box;
   h1
     position: relative;
     padding: 20px 0 ;
@@ -182,6 +183,10 @@ export default {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+  .no-video
+    font-size 18px
+    text-align center
+    padding-top 50px
   .el-pagination
     text-align: center;
   .point-wrap

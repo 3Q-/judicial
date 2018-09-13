@@ -26,6 +26,23 @@ module.exports = {
         //         });
         //   }
         // }
+      },
+      '/uc': {
+        // target: 'https://www.examos.cn',
+        target: 'http://47.94.169.184:28080',
+        // target: 'http://10.0.0.100:8080',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/uc': '/uc'
+        }
+        // onProxyRes(proxyRes, req, res){
+        //   if (req.originalUrl.indexOf('user.login') > -1){
+        //     proxyRes.headers['set-cookie'] =
+        //         [].slice.call(proxyRes.headers['set-cookie'] || '').map(item => {
+        //           return item.replace(/Path=\/.*?;/, 'Path=/;').replace(/Domain=.*?;/, 'Domain=' + req.hostname + ';');
+        //         });
+        //   }
+        // }
       }
     },
     // Various Dev Server settings

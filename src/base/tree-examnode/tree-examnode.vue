@@ -102,7 +102,8 @@ export default {
       setExamAdministrativeId: 'SET_EXAM_ADMINISTRATIVE_ID'
     }),
     checkChange(item, state, child){
-      const keys = this.tree.getCheckedKeys();
+      const keys = this.$refs.examNodeTree.getCheckedKeys();
+      console.log(keys);
       this.setExamNodeId(keys.join(','));
     },
     selectNode(item, node, tree){

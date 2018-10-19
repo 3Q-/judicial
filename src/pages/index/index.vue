@@ -2,26 +2,28 @@
   <div class="container clearfix">
   <!-- <city-picker field="city" placeholder="选择城市" :city-list="cityList" :no-hot="false" :value="cityId"
     @on-city-change="onCityChange"></city-picker> -->
-    <h1><div class="time"><el-button disabled icon="el-icon-date" @click="selectCity">{{time|formatDate}}</el-button></div>国家统一法律职业资格考试监控视频</h1>
+    <h1><div class="time"><el-button disabled icon="el-icon-date" @click="selectCity">{{time|formatDate}}</el-button></div>2018年国家统一法律职业资格考试监控视频-北京考区</h1>
     <div class="wrap" v-if="list.length">
       <div class="item" v-for="(item,index) in list" :key="index">
         <div class="player" >
           <video :id="'myPlayer'+index" poster="./video.png" controls playsInline webkit-playsinline autoplay :width="videoW" :height="videoH" >
-            <source :src="item.rtmp" />
-            <source :src="item.liveAddress" type="application/x-mpegURL" />
+            <source :src="hd ? item.rtmpHd: item.rtmp" />
+            <source :src="hd ? item.hdAddress : item.liveAddress" type="application/x-mpegURL" />
           </video>
         </div>
         <div class="title" :title="item">{{item.channelName}}</div>
       </div>
     </div>
-    <div v-else class="no-video">暂无监控视屏</div>
+    <div v-else class="no-video">暂无监控视频</div>
     <div class="page" v-if="list.length">
       <el-pagination
         background
         @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
         :current-page="pagination.current"
         :page-size="pagination.size"
-        layout="total, prev, pager, next, jumper"
+        :page-sizes="pagination.pagesizes"
+        layout="total, sizes, prev, pager, next, jumper"
         :total="pagination.total">
       </el-pagination>
     </div>
@@ -31,15 +33,19 @@
 
 <script>
 import {mapGetters} from 'vuex';
+import Cookies from 'js-cookie';
 import TreeExamnode from 'base/tree-examnode/tree-examnode';
 import cityPicker from 'base/city-picker/city-picker';
 import cityList from 'common/data/china-city-data';
 import {formatDate} from 'common/js/date';
 import {getLiveVideoList} from 'api/api';
 import EZUIPlayer from 'EZUIPlayer';
+const PAGINATION_SIZE = 'PAGINATION_SIZE';
+
 export default {
   components: {TreeExamnode, cityPicker},
   data(){
+    // const SIZE = Cookies.get(PAGINATION_SIZE) || 6;
     return {
       cityList,
       cityId: '410100',
@@ -47,10 +53,12 @@ export default {
       screenWidth: document.body.clientWidth,
       videoList: [],
       pagination: {
+        pagesizes: [3, 6, 9],
         total: 0,
-        size: 9,
+        size: 6,
         current: 1
-      }
+      },
+      hd: false
     };
   },
   computed: {
@@ -69,11 +77,21 @@ export default {
       const me = this;
       return me.videoList;
     }
+
   },
   created(){
     setInterval(() => {
       this.time = new Date();
     }, 1000);
+    const SIZE = Cookies.get(PAGINATION_SIZE);
+    if (SIZE){
+      this.pagination.size = +SIZE;
+    }
+    if (this.$route.query.hd === 'true'){
+      this.hd = true;
+    } else {
+      this.hd = false;
+    }
     this.getLiveVideoList();
   },
   mounted(){
@@ -112,6 +130,7 @@ export default {
     getLiveVideoList(){
       const me = this;
       const data = {};
+
       data.nodeId = me.nodeId;
       data.administrativeId = me.administrativeId;
       data.pageIdx = me.pagination.current;
@@ -135,6 +154,11 @@ export default {
 
     handleCurrentChange(val){
       this.pagination.current = val;
+      this.getLiveVideoList();
+    },
+    handleSizeChange(val){
+      Cookies.set(PAGINATION_SIZE, val, { expires: 7 });
+      this.pagination.size = val;
       this.getLiveVideoList();
     }
   },

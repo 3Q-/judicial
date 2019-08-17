@@ -7,7 +7,7 @@
       <div class="item" v-for="(item,index) in list" :key="index">
         <div class="player" >
           <video :id="'myPlayer'+index" poster="./video.png" controls playsInline webkit-playsinline autoplay :width="videoW" :height="videoH" >
-            <source :src="hd ? item.rtmpHd: item.rtmp" />
+            <source :src="hd ? item.rtmpHd: item.rtmp" type="rtmp/flv" />
             <source :src="hd ? item.hdAddress : item.liveAddress" type="application/x-mpegURL" />
           </video>
         </div>

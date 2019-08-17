@@ -32,6 +32,7 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   externals: {
+    'EZUIKit': 'EZUIKit',
     'EZUIPlayer': 'EZUIPlayer'
   },
   resolve: {

@@ -1,4 +1,6 @@
 import axios from 'axios';
+import router from '@/router/index';
+import {removeToken, getToken} from 'common/js/token';
 // import qs from 'qs';
 import {CODE_MAP} from './code-message';
 // import store from '@/store';
@@ -16,11 +18,16 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(config => {
   // console.log(config);
+  if (config.url === '/auth/oauth/token'){
+    config.headers.Authorization = 'Basic c2lub3RuOnNpbm90bg==';
+  } else {
+    config.headers.Authorization = 'Bearer ' + (getToken() || '');
+  }
   return config;
 }, error => {
   // Do something with request error
-  console.log(error); // for debug
-  Promise.reject(error);
+  console.log('request error', error); // for debug
+  return Promise.reject(error);
 });
 
 // respone interceptor
@@ -30,16 +37,29 @@ service.interceptors.response.use(
   * 如通过xmlhttprequest 状态码标识 逻辑可写在下面error中
   */
   response => {
-    const res = response.data;
-    if (res && res.state !== 0){
-      console.log(`获取数据失败 ${response.config.url} `, res);
-      return Promise.reject(res);
+    console.log(response);
+    if (response && response.status === 200){
+      const res = response.data;
+      if (res && res.access_token){
+        return res;
+      } else if (res && res.code === 0){
+        return res;
+      } else {
+        console.log(`获取数据失败 ${response.config.url} `, res);
+        return Promise.reject(res);
+      }
+    } else if (response && response.status > 400 && response.status < 505){
+      removeToken();
+      return Promise.reject(response);
+    } else {
+      console.log(`获取数据失败 ${response.config.url} `, response);
+      return Promise.reject(response);
     }
-    return res;
   },
 
   error => {
-    console.log('err ' + error);// for debug
+    removeToken();
+    router.push('/login');
     return Promise.reject(error);
   });
 
@@ -49,18 +69,6 @@ service.interceptors.response.use(
  */
 service.code = (codeMap) => {
   code = Object.assign(code, codeMap);
-};
-
-/**
- * @param  {Array} promises 数组promise
- * @return {promise}          [description]
- */
-service.all = (promises) => {
-  return Promise.all(promises);
-};
-
-service.race = (promises) => {
-  return Promise.race(promises);
 };
 
 export default service;

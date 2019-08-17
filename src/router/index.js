@@ -13,7 +13,12 @@ export default new Router({
     {
       path: '/index',
       name: 'index',
-      component: _import('pages/index/index')
+      component: _import('pages/news/news')
+    },
+    {
+      path: '/news',
+      name: 'news',
+      component: _import('pages/news/news')
     },
     {path: '/login', component: _import('pages/login/login')}
   ]

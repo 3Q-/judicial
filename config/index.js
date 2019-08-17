@@ -3,7 +3,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path');
-
+const target = 'https://www.examos.cn';
+// const target = 'http://10.0.0.83:8888';
 module.exports = {
   dev: {
     // Paths
@@ -11,38 +12,39 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/bigdata': {
-        // target: 'https://www.examos.cn',
-        target: 'http://47.94.169.184:28080',
-        // target: 'http://10.0.0.100:8080',
+        target: target,
         changeOrigin: true,
         pathRewrite: {
           '^/bigdata': '/bigdata'
         }
-        // onProxyRes(proxyRes, req, res){
-        //   if (req.originalUrl.indexOf('user.login') > -1){
-        //     proxyRes.headers['set-cookie'] =
-        //         [].slice.call(proxyRes.headers['set-cookie'] || '').map(item => {
-        //           return item.replace(/Path=\/.*?;/, 'Path=/;').replace(/Domain=.*?;/, 'Domain=' + req.hostname + ';');
-        //         });
-        //   }
-        // }
+      },
+      '/code': {
+        target: target,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/code': '/code'
+        }
+      },
+      '/monitor': {
+        target: target,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/monitor': '/monitor'
+        }
+      },
+      '/auth': {
+        target: target,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/auth': '/auth'
+        }
       },
       '/uc': {
-        // target: 'https://www.examos.cn',
-        target: 'http://47.94.169.184:28080',
-        // target: 'http://10.0.0.100:8080',
+        target: target,
         changeOrigin: true,
         pathRewrite: {
           '^/uc': '/uc'
         }
-        // onProxyRes(proxyRes, req, res){
-        //   if (req.originalUrl.indexOf('user.login') > -1){
-        //     proxyRes.headers['set-cookie'] =
-        //         [].slice.call(proxyRes.headers['set-cookie'] || '').map(item => {
-        //           return item.replace(/Path=\/.*?;/, 'Path=/;').replace(/Domain=.*?;/, 'Domain=' + req.hostname + ';');
-        //         });
-        //   }
-        // }
       }
     },
     // Various Dev Server settings

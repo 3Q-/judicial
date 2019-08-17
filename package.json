@@ -12,14 +12,14 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "element-ui": "^2.0.11",
     "js-cookie": "^2.2.0",
     "video.js": "^7.1.0",
     "videojs-contrib-hls": "^5.14.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vue-video-player": "^5.0.2",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "element-ui": "^2.11.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -34,6 +34,7 @@
     "babel-preset-stage-2": "^6.22.0",
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
+    "crypto-js": "^3.1.9-1",
     "css-loader": "^0.28.0",
     "eslint": "^4.15.0",
     "eslint-config-standard": "^10.2.1",

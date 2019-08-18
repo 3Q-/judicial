@@ -60,8 +60,8 @@ export default {
     };
     return {
       loginForm: {
-        username: 'monitor',
-        password: 'monitor',
+        username: '',
+        password: '',
         code: '',
         randomStr: +new Date()
       },

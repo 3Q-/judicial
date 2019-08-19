@@ -4,6 +4,7 @@
       <img height="21"  src="../login/logo.png" alt="统一客户端">
       <span>统一客户端</span>
       <span class="tab"><i class="el-icon-video-camera"></i>视屏预览</span>
+      <span @click="logout" class="logout"> <i class="iconfont iconsignout"></i> 退出</span>
     </el-header>
     <el-container>
       <el-aside width="300px">
@@ -62,10 +63,6 @@
               <video :src="currentPageList[0].hdAddress" id="myPlayer1" controls playsInline webkit-playsinline autoplay style="width: 100%;height: 100%;" to-elem="0">
                   <source :src="currentPageList[0].hdAddress" type="application/x-mpegURL" />
               </video>
-              <div>
-                {{currentPageList[0].channelName}}
-                {{currentPageList[0].hdAddress}}
-              </div>
             </div>
           </div>
           <div class="more-wrapper" v-else>
@@ -80,10 +77,6 @@
                 <video :src="currentPageList[i-1].hdAddress" :id="myPlayerId(i)" controls playsInline webkit-playsinline autoplay style="width: 100%;height: 100%;" :to-elem="i-1">
                   <source :src="currentPageList[i-1].hdAddress" type="application/x-mpegURL" />
                 </video>
-                <div>
-                  {{currentPageList[i-1].channelName}}
-                  {{currentPageList[i-1].hdAddress}}
-                </div>
               </div>
             </div>
           </div>
@@ -97,29 +90,16 @@
 import {mapGetters} from 'vuex';
 // import Cookies from 'js-cookie';
 import TreeExamnode from 'base/tree-examnode/tree-examnode';
-import cityPicker from 'base/city-picker/city-picker';
-import cityList from 'common/data/china-city-data';
+import {removeToken} from 'common/js/token';
 // import {formatDate} from 'common/js/date';
 import {getysCameraList} from 'api/api';
 import EZUIKit from 'EZUIKit';
 // const PAGINATION_SIZE = 'PAGINATION_SIZE';
 
 export default {
-  components: {TreeExamnode, cityPicker},
+  components: {TreeExamnode},
   data(){
     return {
-      cityList,
-      cityId: '410100',
-      time: new Date(),
-      screenWidth: document.body.clientWidth,
-      videoList: [],
-      pagination: {
-        pagesizes: [3, 6, 9],
-        total: 0,
-        size: 6,
-        current: 1
-      },
-      hd: false,
       filterText: '',
       defaultProps: {
         children: 'children',
@@ -309,6 +289,11 @@ export default {
       this.showStateCount = 4;
       this.clear();
     },
+    logout(){
+      console.log('good');
+      removeToken();
+      this.$router.push('/login');
+    },
     stop(){
       this.showStart = true;
       clearTimeout(this.timer);
@@ -362,58 +347,6 @@ export default {
         }
       }
     }
-
-    // initMedia(id){
-    //   let player = new EZUIPlayer(id);
-    //   player.on('error', function(){
-    //     console.log('error');
-    //   });
-    //   player.on('play', function(){
-    //     console.log('play');
-    //   });
-    //   player.on('pause', function(){
-    //     console.log('pause');
-    //   });
-    //   // player.play();
-    // },
-    // onCityChange(cityId){
-    //   this.cityId = cityId;
-    // },
-    // selectCity(){},
-    // getLiveVideoList(){
-    //   const me = this;
-    //   const data = {};
-
-    //   data.nodeId = me.nodeId;
-    //   data.administrativeId = me.administrativeId;
-    //   data.pageIdx = me.pagination.current;
-    //   data.pageSize = me.pagination.size;
-    //   getLiveVideoList(data).then(res => {
-    //     me.pagination.total = res.page.total;
-    //     const videoList = res.page.rows;
-
-    //     me.videoList = [];
-    //     me.$nextTick(() => {
-    //       me.videoList = videoList;
-    //       me.$nextTick(() => {
-    //         me.videoList.forEach((item, i) => {
-    //           var videoId = `myPlayer${i}`;
-    //           me.initMedia(videoId);
-    //         });
-    //       });
-    //     });
-    //   });
-    // },
-
-    // handleCurrentChange(val){
-    //   this.pagination.current = val;
-    //   this.getLiveVideoList();
-    // },
-    // handleSizeChange(val){
-    //   Cookies.set(PAGINATION_SIZE, val, { expires: 7 });
-    //   this.pagination.size = val;
-    //   this.getLiveVideoList();
-    // }
   },
   filters: {
     formatDate(time){
@@ -439,6 +372,7 @@ export default {
       border-bottom: 0 none;
       background-color: #f8f8fa;
     >.el-header
+      position: relative;
       background-color: #1478f2;
       color: #9bc5fa;
       text-align: left;
@@ -459,14 +393,19 @@ export default {
         height: 32px;
         margin-left: 45px;
         text-align: center;
-        font-size: 12px;m
+        font-size: 12px;
         color: #d0e8ff;
         border-radius: 3px 3px 0 0;
         border-bottom: 3px solid #84c5ff
         background: #3d9aff;
         box-sizing: border-box;
+      .logout
+        position: absolute;
+        right: 20px;
+        top: 0;
+        z-index: 9;
+        cursor: pointer;
     .el-aside
-      height: 100%;
       padding: 2px 0 0 2px;
       border-radius: 3px;
       background-color: #ffffff;
@@ -515,6 +454,8 @@ export default {
         padding-left: 20px;
         padding-right: 20px;
         line-height: 43px;
+        .button
+          cursor: pointer;
         .el-button--medium
           font-size: 14px;
           i

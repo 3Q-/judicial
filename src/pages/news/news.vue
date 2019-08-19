@@ -406,29 +406,29 @@ export default {
         z-index: 9;
         cursor: pointer;
     .el-aside
+      display: flex;
+      flex-direction: column;
       padding: 2px 0 0 2px;
       border-radius: 3px;
       background-color: #ffffff;
       color: #333;
       text-align: center;
       box-sizing: border-box;
-      overflow: hidden;
       .aside-wrapper
-        position: relative;
-        width: 100%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
         height: 100%;
         border: 1px solid #eceef2;
         box-sizing: border-box;
-        overflow: hidden;
         .aside-header
+          flex: 0 0 43px;
           padding: 7px 33px 7px 20px;
           border-bottom: 1px solid #eceef2;
           box-sizing: border-box;
         .aside-tree-wrapper
-          position: absolute;
-          top: 43px;
-          bottom: 0;
-          width: 100%;
+          flex: 1;
+          height: 0;
           overflow-y: auto;
       .el-tree
         .custom-tree-node
@@ -450,6 +450,7 @@ export default {
       background-color: #f8f8fa;
       color: #333;
       .main-top
+        flex 0 0 43px;
         height: 43px;
         padding-left: 20px;
         padding-right: 20px;
@@ -462,7 +463,7 @@ export default {
             font-size: 18px;
       .video-list-wrapp
         flex: 1
-        height: 0;
+        position: relative;
         video
           background: #000;
           border: 0 none !important;
@@ -493,16 +494,22 @@ export default {
             margin-bottom: 20px;
             font-size: 60px;
         .single-wrapper
-          height: 100%;
-          width: 100%;
+          position: absolute;
+          left:0;
+          top: 0;
+          right: 0;
+          bottom: 0;
           padding: 3px;
           box-sizing: border-box;
           .nodata
             width: 100%;
             height: 100%;
         .more-wrapper
-          height: 100%;
-          width: 100%;
+          position: absolute;
+          left:0;
+          top: 0;
+          right: 0;
+          bottom: 0;
           overflow: hidden;
           box-sizing: border-box;
           .list

@@ -56,8 +56,8 @@ export default {
     },
     list(){
       const me = this;
-      let areas = [];
-      let map = {};
+      const areas = [];
+      const map = {};
       me.examNodes.forEach(item => {
         if (!map[item.administrativeId]){
           areas.push({
@@ -79,6 +79,7 @@ export default {
           }
         });
       });
+      console.log('areas :>> ', areas);
       return areas;
     }
   },
@@ -88,14 +89,20 @@ export default {
   methods: {
     getExamNodes(){
       const me = this;
-      getExamNodes().then(res => {
-        const rows = res.data;
-        if (!rows || !rows.length){
-          console.log('考点数据为空');
-          return;
-        }
-        me.examNodes = rows;
-      });
+      me.examNodes = [{
+        administrativeId: 'o1b4d5331n4cDvVEzCAC49skhmeTcmBl',
+        administrativeName: '南宁市',
+        id: 'oujikgde147eSY7vz34Dy8QwD73Y_nbF',
+        nodeName: '广西开放大学'
+      }];
+      // getExamNodes().then(res => {
+      //   const rows = res.data;
+      //   if (!rows || !rows.length){
+      //     console.log('考点数据为空');
+      //     return;
+      //   }
+      //   me.examNodes = rows;
+      // });
     },
     ...mapMutations({
       setExamNodeId: 'SET_EXAM_NODE_ID',
@@ -103,7 +110,7 @@ export default {
     }),
     checkChange(item, state, child){
       const keys = this.$refs.examNodeTree.getCheckedKeys();
-      console.log(keys);
+      // console.log(keys);
       this.setExamNodeId(keys.join(','));
     },
     selectNode(item, node, tree){
@@ -127,29 +134,29 @@ export default {
 
 <style lang="stylus" rel="stylesheet/stylus">
 .tree-examNode-wrap
-  position absolute
-  top 30px
-  right 10px
-  width 300px
-  height 500px
-  z-index 2
-  border-radius 10px
-  border 1px solid #ccc
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  width: 300px;
+  height: 500px;
+  z-index: 2;
+  border-radius: 10px;
+  border: 1px solid #ccc;
   .tree-examNode
-    height 100%
-    display flex
-    flex-direction column
-    background #fff
-    border-radius 10px
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 10px;
     .el-header
       display: flex;
       line-height: 60px;
-      padding-right:40px;
-      border-radius 10px 10px 0 0
-      border-bottom 1px solid #ccc
+      padding-right: 40px;
+      border-radius: 10px 10px 0 0;
+      border-bottom: 1px solid #ccc;
       .node-title
         width: 100px;
-        height: 60px
+        height: 60px;
       .el-input
         input
           background: #efe;
@@ -158,27 +165,20 @@ export default {
         position: relative;
         left: 30px;
         cursor: pointer;
-        color: #666
+        color: #666;
         &:hover
           color: #000;
     .el-main
-      boxshadow(12px)
-.bounce-enter-active {
-  animation: bounce-in .5s;
-}
-.bounce-leave-active {
-  animation: bounce-in .5s reverse;
-}
-@keyframes bounce-in {
-  0% {
+      boxshadow(12px);
+.bounce-enter-active
+  animation: bounce-in 0.5s;
+.bounce-leave-active
+  animation: bounce-in 0.5s reverse;
+@keyframes bounce-in
+  0%
     transform: scale(0);
-  }
-  50% {
+  50%
     transform: scale(1.1);
-  }
-  100% {
+  100%
     transform: scale(1);
-  }
-}
-
 </style>

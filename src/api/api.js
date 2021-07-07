@@ -8,7 +8,7 @@ export const login = (data) => {
     key: '1234567887654321',
     param: ['password']
   });
-  console.log(user);
+  // console.log(user);
   return axios({
     method: 'post',
     url: '/auth/oauth/token',
@@ -17,18 +17,18 @@ export const login = (data) => {
 };
 
 export const getLiveVideoList = (data) => {
-  let url = context + 'ys/video/getLiveVideoList.jspx';
+  const url = context + 'ys/video/getLiveVideoList.jspx';
   return axios.post(url, {params: data});
 };
 
 export const getExamNodes = (data) => {
-  let url = context + 'examNode/getExamNodes.jspx';
+  const url = context + 'examNode/getExamNodes.jspx';
   return axios.get(url);
 };
 
 // http://localhost:9090/monitor/ysCamera/list?planId=ouidmckuou8e0ujgT_AT2aIOYF0eL9TJ
 export const getysCameraList = (data) => {
-  let url = '/monitor/ysCamera/list';
+  const url = '/monitor/ysCamera/list';
   const params = {planId: 'ouidmckuou8e0ujgT_AT2aIOYF0eL9TJ'};
   return axios({
     method: 'get',
